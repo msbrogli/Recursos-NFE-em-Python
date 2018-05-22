@@ -144,8 +144,8 @@ class Certificado(object):
 
         # Ativa as funções da API de criptografia
         xmlsec.init()
-        xmlsec.cryptoAppInit(None)
-        xmlsec.cryptoInit()
+        #xmlsec.cryptoAppInit(None)
+        #xmlsec.cryptoInit()
 
     def _finaliza_funcoes_externas(self):
         ''' Desativa as funções criptográficas e de análise XML
@@ -245,7 +245,7 @@ class Certificado(object):
         #
         # Separa o nó da assinatura
         #
-        noh_assinatura = xmlsec.findNode(doc_xml.getRootElement(), xmlsec.NodeSignature, xmlsec.DSigNs)
+        noh_assinatura = xmlsec.tree.find_node(doc_xml.getRootElement(), xmlsec.constants.NodeSignature, xmlsec.constants.DSigNs)
         
         #
         # Arquivos temporários são criados com o certificado no formato PEM
@@ -356,7 +356,7 @@ class Certificado(object):
         #
         # Separa o nó da assinatura
         #
-        noh_assinatura = xmlsec.findNode(doc_xml.getRootElement(), xmlsec.NodeSignature, xmlsec.DSigNs)
+        noh_assinatura = xmlsec.tree.find_node(doc_xml.getRootElement(), xmlsec.constants.NodeSignature, xmlsec.constants.DSigNs)
 
         #
         # Prepara o gerenciador dos certificados confiáveis para verificação
@@ -383,7 +383,7 @@ class Certificado(object):
         # Separa o certificado que assinou o arquivo, e prepara a instância
         # com os dados desse certificado
         #
-        certificado = xmlsec.findNode(noh_assinatura, xmlsec.NodeX509Certificate, xmlsec.DSigNs).content
+        certificado = xmlsec.tree.find_node(noh_assinatura, xmlsec.NodeX509Certificate, xmlsec.DSigNs).content
         self.prepara_certificado_txt(certificado)
 
         #
@@ -394,7 +394,7 @@ class Certificado(object):
         # do certificado
         # Essa data deve ser informada como um inteiro tipo "unixtime"
         #
-        noh_chave = xmlsec.findNode(noh_assinatura, xmlsec.NodeKeyInfo, xmlsec.DSigNs)
+        noh_chave = xmlsec.tree.find_node(noh_assinatura, xmlsec.NodeKeyInfo, xmlsec.DSigNs)
         manipulador_chave = xmlsec.KeyInfoCtx(mngr=certificados_confiaveis)
         manipulador_chave.certsVerificationTime = mktime(self.data_inicio_validade.timetuple())
 

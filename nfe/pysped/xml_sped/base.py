@@ -779,7 +779,7 @@ class XMLNFe(NohXML):
         # para evitar erros de conversão unicode para ascii
         xml = tira_abertura(self.xml).encode(u'utf-8')
 
-        esquema = etree.XMLSchema(etree.parse(arquivo_esquema))
+        esquema = etree.XMLSchema(file=arquivo_esquema)
 
         if not esquema.validate(etree.fromstring(xml)):
             print 'ESQUEMA',arquivo_esquema
